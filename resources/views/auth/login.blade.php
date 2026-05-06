@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ asset('auth/style.css') }}">
+</head>
+<body>
+    <div class="wave-container">
+        <div class="wave wave-1"></div>
+        <div class="wave wave-2"></div>
+        <div class="wave wave-3"></div>
+        <div class="wave wave-4"></div>
+    </div>
+
+    <div class="gradient-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="card-glow"></div>
+            <div class="login-header">
+                <div class="gradient-icon">
+                    <div class="icon-wave"></div>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <h2>Welcome</h2>
+                <p>Sign in to continue your journey</p>
+            </div>
+            
+            <form method="POST" action="/login">
+                @csrf
+                <div class="form-group">
+                    <div class="input-container">
+                        <div class="input-bg"></div>
+                        <input type="email" id="email" name="email" required autocomplete="email" placeholder=" ">
+                        <label for="email">Email Address</label>
+                        <div class="input-wave"></div>
+                    </div>
+                    <span class="error-message" id="emailError"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-container password-container">
+                        <div class="input-bg"></div>
+                        <input type="password" id="password" name="password" required autocomplete="current-password" placeholder=" ">
+                        <label for="password">Password</label>
+                        <button type="button" class="password-toggle" id="passwordToggle" aria-label="Toggle password visibility">
+                            <div class="toggle-bg"></div>
+                            <div class="toggle-icon">
+                                <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                                <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                                    <line x1="1" y1="1" x2="23" y2="23"/>
+                                </svg>
+                            </div>
+                        </button>
+                        <div class="input-wave"></div>
+                    </div>
+                    <span class="error-message" id="passwordError"></span>
+                </div>
+                <button type="submit" class="gradient-button">
+                    <div class="button-bg"></div>
+                    <div class="button-content">
+                        <span class="btn-text">Sign In</span>
+                        <div class="btn-loader">
+                            <div class="loader-wave"></div>
+                            <div class="loader-wave"></div>
+                            <div class="loader-wave"></div>
+                        </div>
+                    </div>
+                    <div class="button-ripple"></div>
+                </button>
+            </form>
+
+            <div class="signup-link">
+                <p>New to our platform? <a href="{{route('register.post')}}">Create account</a></p>
+            </div>
+
+            <div class="success-message" id="successMessage">
+                <div class="success-wave"></div>
+                <div class="success-content">
+                    <div class="success-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <h3>Welcome back!</h3>
+                    <p>Redirecting to your dashboard...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../shared/js/form-utils.js"></script>
+    <script src="{{ asset('auth/script.js') }}"></script>
+</body>
+</html>
