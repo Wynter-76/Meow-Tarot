@@ -23,6 +23,41 @@
         <div class="particle"></div>
     </div>
 
+    {{-- ✅ 30 TAROT CARDS BACKGROUND --}}
+    <div class="tarot-bg" aria-hidden="true">
+        <div class="tarot-card tc1"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">☽</div></div></div>
+        <div class="tarot-card tc2"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">★</div></div></div>
+        <div class="tarot-card tc3"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">✦</div></div></div>
+        <div class="tarot-card tc4"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">☀</div></div></div>
+        <div class="tarot-card tc5"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">⚝</div></div></div>
+        <div class="tarot-card tc6"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">☾</div></div></div>
+        <div class="tarot-card tc7"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">✧</div></div></div>
+        <div class="tarot-card tc8"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">♦</div></div></div>
+        <div class="tarot-card tc9"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">☿</div></div></div>
+        <div class="tarot-card tc10"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">♁</div></div></div>
+        <div class="tarot-card tc11"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">⛤</div></div></div>
+        <div class="tarot-card tc12"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">♃</div></div></div>
+        <div class="tarot-card tc13"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">♄</div></div></div>
+        <div class="tarot-card tc14"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">♆</div></div></div>
+        <div class="tarot-card tc15"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">☽</div></div></div>
+        <div class="tarot-card tc16"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">★</div></div></div>
+        <div class="tarot-card tc17"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">✦</div></div></div>
+        <div class="tarot-card tc18"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">⚝</div></div></div>
+        <div class="tarot-card tc19"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">☀</div></div></div>
+        <div class="tarot-card tc20"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">✧</div></div></div>
+        <div class="tarot-card tc21"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">☿</div></div></div>
+        <div class="tarot-card tc22"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">♁</div></div></div>
+        <div class="tarot-card tc23"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">⛤</div></div></div>
+        <div class="tarot-card tc24"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">♃</div></div></div>
+        <div class="tarot-card tc25"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">♄</div></div></div>
+        <div class="tarot-card tc26"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">♆</div></div></div>
+        <div class="tarot-card tc27"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">☾</div></div></div>
+        <div class="tarot-card tc28"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">☽</div></div></div>
+        <div class="tarot-card tc29"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">✦</div></div></div>
+        <div class="tarot-card tc30"><div class="tarot-card-inner"><div class="tarot-card-back"></div><div class="tarot-border-outer"></div><div class="tarot-border-inner"></div><div class="tarot-dot tl"></div><div class="tarot-dot tr"></div><div class="tarot-dot bl"></div><div class="tarot-dot br"></div><div class="tarot-symbol">★</div></div></div>
+    </div>
+    {{-- ✅ END TAROT CARDS --}}
+
     <div class="login-container">
         <div class="login-card">
             <div class="card-glow"></div>
@@ -38,7 +73,7 @@
                 <h2>Welcome</h2>
                 <p>Sign in to continue your journey</p>
             </div>
-            
+
             <form method="POST" action="/login">
                 @csrf
                 <div class="form-group">
@@ -73,6 +108,7 @@
                     </div>
                     <span class="error-message" id="passwordError"></span>
                 </div>
+
                 <button type="submit" class="gradient-button">
                     <div class="button-bg"></div>
                     <div class="button-content">

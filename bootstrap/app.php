@@ -11,11 +11,22 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        
+        // 1. Daftarkan TrustProxies secara Global di urutan paling atas
+        $middleware->prepend(\App\Http\Middleware\TrustProxies::class);
+
+        // 2. Kecualikan Callback Midtrans dari Validasi CSRF Token
+        $middleware->validateCsrfTokens(except: [
+            'midtrans/callback'
+        ]);
+
+        // 3. Daftarkan Alias Middleware untuk Route Akses Tingkat Pengguna
         $middleware->alias([
             'admin' => \App\Http\Middleware\admin::class,
             'reader' => \App\Http\Middleware\reader::class,
             'customer' => \App\Http\Middleware\customer::class,
         ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

@@ -12,7 +12,7 @@ class ReaderController extends Controller
     public function dashboard()
     {
         $bookingMasuk = Booking::where('status','pending')->count();
-        $diproses     = Booking::where('status','process')->count();
+        $diproses     = Booking::where('status','processing')->count();
         $selesai      = Booking::where('status','done')->count();
 
         $latest = Booking::with('package')
@@ -57,7 +57,7 @@ class ReaderController extends Controller
 
     public function kirimhasil($id)
     {
-        $booking = Booking::with('package')->findOrFail($id);
+        $booking = Booking::with(['package', 'questions', 'files'])->findOrFail($id);
         return view('reader.kirimhasil', compact('booking'));
     }
 

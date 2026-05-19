@@ -1099,3 +1099,116 @@ RESPONSIVE
 
 
 }
+.service-section {
+        background-color: #050505;
+        background-image: 
+            radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 60%),
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cdefs%3E%3Cpattern id='stars' width='150' height='150' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='2' cy='2' r='1' fill='%23d4af37' opacity='0.2'/%3E%3Ccircle cx='80' cy='120' r='0.5' fill='%23fff' opacity='0.1'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23stars)'/%3E%3C/svg%3E");
+        color: #ffffff;
+        padding: 100px 0;
+    }
+
+    /* Card Wrapper: Tambahin margin luar supaya antar kotak gak nempel */
+    .card-wrapper {
+        padding: 15px; /* Spasi tambahan antar kolom */
+    }
+
+    .package-card {
+        background-color: #0c0c0c;
+        border: 1px solid #3d3020;
+        border-radius: 15px;
+        padding: 35px 25px; /* Padding dalam kotak diperlebar */
+        min-height: 280px; 
+        max-width: 320px;
+        margin: 0 auto;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        transition: all 0.4s ease;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    /* Background Kartu Tarot Mystic Seal */
+    .package-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 150'%3E%3Cpath d='M50 10 L50 140 M10 75 L90 75' stroke='%23d4af37' stroke-width='0.2' opacity='0.2'/%3E%3Ccircle cx='50' cy='75' r='35' fill='none' stroke='%23d4af37' stroke-width='0.5' opacity='0.3'/%3E%3Ccircle cx='50' cy='75' r='20' fill='none' stroke='%23d4af37' stroke-width='0.8' opacity='0.4'/%3E%3Cpath d='M30 45 L70 105 M70 45 L30 105' stroke='%23d4af37' stroke-width='0.3' opacity='0.2'/%3E%3Crect x='5' y='5' width='90' height='140' rx='6' fill='none' stroke='%23d4af37' stroke-width='0.8' opacity='0.2'/%3E%3C/svg%3E");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 140px;
+        opacity: 0.6;
+        z-index: -1;
+    }
+
+    .package-card::before {
+        content: "";
+        position: absolute;
+        inset: 12px;
+        border: 1px solid rgba(212, 175, 55, 0.15);
+        border-radius: 10px;
+        pointer-events: none;
+    }
+
+    .package-card:hover {
+        transform: translateY(-12px);
+        border-color: #d4af37;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+    }
+
+    .package-title {
+        color: #d4af37;
+        font-family: 'Playfair Display', serif;
+        font-size: 1.6rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+        z-index: 3;
+    }
+
+    .package-card p {
+        color: #e0e0e0;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 30px;
+        line-height: 1.4;
+        z-index: 3;
+    }
+
+    .btn-pink {
+        background: linear-gradient(45deg, #e91e63, #c2185b);
+        color: white !important;
+        border: none;
+        padding: 12px;
+        font-size: 0.9rem;
+        font-weight: 800;
+        border-radius: 8px;
+        z-index: 4;
+    }
+
+    /* Fix Dropdown agar tidak melayang aneh */
+.navbar-nav .dropdown-menu {
+    background-color: #0a0a0a !important; /* Hitam Mystic */
+    border: 1px solid #d4af37 !important; /* Border Emas */
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    overflow: hidden;
+    padding: 0;
+}
+
+.dropdown-menu > li > a {
+    color: #ccc !important;
+    transition: 0.3s;
+}
+
+.dropdown-menu > li > a:hover {
+    background-color: #e91e63 !important; /* Pink saat hover */
+    color: #fff !important;
+}
+
+/* Biar gak tabrakan sama elemen slider/logo paw */
+.header-section {
+    z-index: 1000 !important;
+}

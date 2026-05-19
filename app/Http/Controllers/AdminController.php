@@ -9,6 +9,10 @@ use App\Models\Payment;
 use App\Models\User;
 use App\Models\testimonials;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\LaporanExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class AdminController extends Controller
@@ -21,16 +25,37 @@ class AdminController extends Controller
 
     public function storePackage(Request $request)
     {
-        Package::create($request->all());
-        return back()->with('success', 'Package dibuat');
-    
+        $data = $request->all();
+        
+        // Logika memisahkan tipe layanan online/offline
+        if ($request->layanan_type == 'online') {
+            $data['is_online'] = 1;
+            $data['is_offline'] = 0;
+        } else {
+            $data['is_online'] = 0;
+            $data['is_offline'] = 1;
+        }
+
+        Package::create($data);
+        return back()->with('success', 'Package berhasil dibuat');
     }
 
     public function updatePackage(Request $request, $id)
     {
         $paket = Package::findOrFail($id);
-        $paket->update($request->all());
-        return back()->with('success', 'Package diupdate');
+        $data = $request->all();
+        
+        // Logika memisahkan tipe layanan online/offline saat update
+        if ($request->layanan_type == 'online') {
+            $data['is_online'] = 1;
+            $data['is_offline'] = 0;
+        } else {
+            $data['is_online'] = 0;
+            $data['is_offline'] = 1;
+        }
+
+        $paket->update($data);
+        return back()->with('success', 'Package berhasil diupdate');
     }
 
     public function deletePackage($id)
@@ -148,5 +173,56 @@ class AdminController extends Controller
                         ->get();
 
         return view('admin.databooking', compact('data'));
+    }
+
+    public function laporan()
+    {
+        // Summary cards
+        $totalBooking     = Booking::count();
+        $totalRevenue     = Booking::where('payment_status', 'paid')->sum('total_price');
+        $totalPaid        = Booking::where('payment_status', 'paid')->count();
+        $totalPending     = Booking::where('payment_status', 'pending')->count();
+        $totalCancelled   = Booking::where('status', 'cancelled')->count();
+        $totalScheduled   = Booking::where('status', 'scheduled')->count();
+
+        // Paket terpopuler
+        $topPackage = Booking::select('package_id', DB::raw('count(*) as total'))
+                        ->groupBy('package_id')
+                        ->orderByDesc('total')
+                        ->with('package')
+                        ->first();
+
+        // Customer terbanyak order
+        $topCustomer = Booking::select('user_id', DB::raw('count(*) as total'))
+                        ->groupBy('user_id')
+                        ->orderByDesc('total')
+                        ->with('user')
+                        ->first();
+
+        // List semua transaksi
+        $bookings = Booking::with(['user', 'package'])
+                        ->latest()
+                        ->get();
+
+        return view('admin.laporan', compact(
+            'totalBooking', 'totalRevenue', 'totalPaid',
+            'totalPending', 'totalCancelled', 'totalScheduled',
+            'topPackage', 'topCustomer', 'bookings'
+        ));
+    }
+    public function exportPdf()
+    {
+        $bookings = Booking::with(['user', 'package'])->latest()->get();
+        $totalRevenue = Booking::where('payment_status', 'paid')->sum('total_price');
+
+        $pdf = Pdf::loadView('admin.laporan_pdf', compact('bookings', 'totalRevenue'))
+                ->setPaper('a4', 'landscape');
+
+        return $pdf->download('laporan-meow-tarot.pdf');
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new LaporanExport, 'laporan-meow-tarot.xlsx');
     }
 }

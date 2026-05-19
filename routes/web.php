@@ -27,6 +27,10 @@ Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
 
+Route::get('/api/check-booked-time', [CustomerController::class, 'checkBookedTime']);
+
+Route::post('/midtrans/callback', [CustomerController::class, 'callback']);
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/tarot/online/{id}', [CustomerController::class, 'tarotOnline']);
     Route::get('/tarot/offline/{id}', [CustomerController::class, 'tarotOffline']);
@@ -40,7 +44,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/payment/{id}', [CustomerController::class, 'payment']);
     Route::get('/history', [CustomerController::class, 'history']);
     Route::post('/contact/send', [CustomerController::class, 'sendContact']);
-    Route::post('/midtrans/callback', [CustomerController::class, 'callback']);
 });
 Route::middleware(['auth','admin'])->group(function () {
     Route::get('/dashboard', [AdminController::class,'dashboard']);
@@ -62,6 +65,8 @@ Route::middleware(['auth','admin'])->group(function () {
     Route::get('/admin/laporan', [AdminController::class,'laporan']);
     Route::get('/admin/approve/{id}', [AdminController::class,'approve']);
     Route::get('/admin/reject/{id}', [AdminController::class,'reject']);
+    Route::get('/admin/laporan/export-pdf',   [AdminController::class, 'exportPdf'])->name('admin.laporan.pdf');
+    Route::get('/admin/laporan/export-excel', [AdminController::class, 'exportExcel'])->name('admin.laporan.excel');
 });
 Route::middleware(['auth','reader'])->group(function () {
     Route::get('/dashboard', [ReaderController::class,'dashboard']);

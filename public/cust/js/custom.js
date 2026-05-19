@@ -226,41 +226,89 @@ $(document).ready(function(){
     })(jQuery);
 
 
-// ========================
-// BOOKING SCRIPT
-// ========================
-
-// AUTO QUESTION (tarot)
 let limit = parseInt($('#question-limit').val());
 
-if (limit) {
-    for (let i = 1; i <= limit; i++) {
-        $('#question-wrapper').append(`
-            <div class="mb-3">
-                <label>Question ${i}</label>
-                <textarea name="questions[]" class="form-control" required></textarea>
-            </div>
-        `);
+    if (limit) {
+        for (let i = 1; i <= limit; i++) {
+            $('#question-wrapper').append(`
+                <div class="mb-3">
+                    <label class="form-label" style="color: #d4af37;">Question ${i}</label>
+                    <textarea name="questions[]" class="form-control" placeholder="Tulis pertanyaanmu di sini..." required></textarea>
+                </div>
+            `);
+        }
     }
-}
 
-function hitungTotal() {
-    let basePrice = Number($('#base-price').val());
-    let total = basePrice;
+    function hitungTotal() {
+        let basePrice = Number($('#base-price').val());
+        let total = basePrice;
 
-    $('.addon:checked').each(function(){
-        total += Number($(this).data('price'));
+        $('.addon:checked').each(function(){
+            total += Number($(this).data('price'));
+        });
+
+        $('#total-price').text(total.toLocaleString('id-ID'));
+    }
+
+    hitungTotal();
+
+    $('.addon').on('change', function(){
+        hitungTotal();
     });
 
-    $('#total-price').text(total.toLocaleString('id-ID'));
-}
+    const dateInput = $('#booking_date');
+    const timeSelect = $('#booking_time');
 
-// jalan pertama kali
-hitungTotal();
+    if (dateInput.length && timeSelect.length) {
+        
+        // Batasi pilihan tanggal (Hari Ini & Besok saja)
+        const hariIni = new Date();
+        const besok = new Date();
+        besok.setDate(hariIni.getDate() + 1);
 
-// jalan setiap checkbox diklik
-$('.addon').on('change', function(){
-    hitungTotal();
+        const formatTanggal = (dateObj) => {
+            let d = dateObj.getDate();
+            let m = dateObj.getMonth() + 1;
+            let y = dateObj.getFullYear();
+            return `${y}-${m < 10 ? '0'+m : m}-${d < 10 ? '0'+d : d}`;
+        };
+
+        // Pasang atribut min dan max ke input date lewat jQuery
+        dateInput.attr('min', formatTanggal(hariIni));
+        dateInput.attr('max', formatTanggal(besok));
+
+        // Live check jam yang sudah dibooking via AJAX setiap tanggal berubah
+        dateInput.on('change', function() {
+            const tanggalTerpilih = $(this).val();
+
+            if (!tanggalTerpilih) return;
+
+            // Menggunakan $.getJSON bawaan jQuery biar seirama sama script lo
+            $.getJSON(`/api/check-booked-time?date=${tanggalTerpilih}`, function(bookedTimes) {
+                
+                // Reset text option petunjuk paling pertama (index 0)
+                timeSelect.find('option').eq(0).text("-- Pilih Jam Pertemuan --");
+                
+                // Cek semua list option jam mulai dari index ke-1
+                timeSelect.find('option').each(function(index) {
+                    if (index === 0) return; // Skip option petunjuk placeholder
+                    
+                    const opsiJam = $(this);
+                    const jamValue = opsiJam.val();
+                    
+                    if (bookedTimes.includes(jamValue)) {
+                        opsiJam.prop('disabled', true);
+                        opsiJam.text(`${jamValue} (Sudah Dibooking)`);
+                        opsiJam.css({ 'color': '#555', 'background-color': '#222' });
+                    } else {
+                        opsiJam.prop('disabled', false);
+                        opsiJam.text(jamValue);
+                        opsiJam.css({ 'color': '#fff', 'background-color': '#111' });
+                    }
+                });
+            }).fail(function() {
+                console.error('Gagal memuat list jam dari server.');
+            });
+        });
+    }
 });
-});
-

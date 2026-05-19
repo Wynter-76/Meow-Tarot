@@ -11,16 +11,21 @@ use App\Models\File;
 use App\Models\Addon;
 use App\Models\testimonials;
 use App\Mail\ContactMail;
+use App\Models\daily_card;
 use Midtrans\Config;
 use Midtrans\Snap;
 use Midtrans\Notification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CustomerController extends Controller
 {
     public function home()
     {
-        return view('customer.index_cust');
+        $today = (int) date('j');
+        $dailyCard = daily_card::where('day', $today)->first();
+
+        return view('customer.index_cust', compact('dailyCard'));
     }
 
     public function service()
@@ -96,6 +101,27 @@ class CustomerController extends Controller
         return view('customer.formcall', compact('package','addons'));
     }
 
+    public function checkBookedTime(Request $request)
+    {
+        // 1. Tangkap tanggal yang dikirim sama JavaScript di browser
+        $date = $request->date; 
+
+        if (!$date) {
+            return response()->json([]);
+        }
+
+        // 2. Cek ke database tabel bookings
+        $bookedTimes = Booking::where('booking_date', $date)
+            ->whereIn('status', ['scheduled', 'done']) // Hanya comot yang statusnya Terjadwal atau Selesai
+            ->where('payment_status', 'paid')         // Dan yang pembayarannya sudah Lunas (Approved)
+            ->selectRaw("DATE_FORMAT(booking_time, '%H:%i') as jam_bersih") // Potong '16:00:00' jadi '16:00'
+            ->pluck('jam_bersih')
+            ->toArray(); // Di-convert jadi array biar hasilnya: ["16:00"]
+
+        // 3. Kirim balik list jam yang hangus tadi ke JavaScript dalam bentuk JSON
+        return response()->json($bookedTimes);
+    }
+
     public function sendContact(Request $request)
     {
         $data = [
@@ -152,7 +178,7 @@ class CustomerController extends Controller
         }
 
         if ($package->category == 'palm' && $request->hasFile('file')) {
-            $path = $request->file('file')->store('palm');
+            $path = $request->file('file')->store('palm', 'public');
 
             File::create([
                 'booking_id' => $booking->id,
@@ -194,57 +220,101 @@ class CustomerController extends Controller
         }
 
         $params = [
-            'transaction_details' => [
-                'order_id' => 'BOOK-'.$booking->id.'-'.time(),
-                'gross_amount' => (int) $booking->total_price,
-            ],
-            'customer_details' => [
-                'first_name' => $booking->name,
-                'email' => $booking->email,
-            ],
-            'item_details' => [
-                [
-                    'id' => 'PKG-'.$booking->package_id,
-                    'price' => (int) $booking->total_price,
-                    'quantity' => 1,
-                    'name' => 'Booking '.$booking->type
-                ]
-            ],
-            'enabled_payments' => ['gopay','bank_transfer']
-        ];
+
+        'transaction_details' => [
+            'order_id' => 'BOOK-'.$booking->id.'-'.time(),
+            'gross_amount' => (int) $booking->total_price,
+        ],
+
+        'customer_details' => [
+            'first_name' => $booking->name,
+            'email' => $booking->email,
+        ],
+
+        'item_details' => [
+            [
+                'id' => 'PKG-'.$booking->package_id,
+                'price' => (int) $booking->total_price,
+                'quantity' => 1,
+                'name' => 'Booking '.$booking->type
+            ]
+        ],
+
+        'enabled_payments' => [
+            'credit_card',
+            'gopay',
+            'bank_transfer',
+            'qris'
+        ],
+
+        'callbacks' => [
+            'finish' => url('/service'),      // Jika sukses bayar, redirect ke Home
+            'unfinish' => url('/service'),    // Jika user nutup pop-up sebelum bayar, balikin ke Home
+            'error' => url('/service')        // Jika pembayaran error, balikin ke Home
+        ]
+    ];
         $snapToken = Snap::getSnapToken($params);
         return view('customer.payment', compact('booking','snapToken'));
     }
 
     public function callback(Request $request)
     {
-        $notif = new Notification();
+        $serverKey = config('midtrans.server_key');
 
-        $order_id = $notif->order_id;
-        $status = $notif->transaction_status;
+        // Ambil data dari request Midtrans
+        $orderId      = $request->order_id;
+        $statusCode   = $request->status_code;
+        $grossAmount  = $request->gross_amount;
+        $signatureKey = $request->signature_key;
 
-        // ambil id booking dari order_id
-        // format: BOOK-{$id}-time
-        $id = explode('-', $order_id)[1];
+        // FIX 1: Hilangkan desimal .00 dari Midtrans agar signature COCOK
+        $grossAmountBulat = number_format((float)$grossAmount, 0, '.', '');
 
-        $booking = Booking::find($id);
+        // Hitung ulang expected signature
+        $expectedSignature = hash('sha512', $orderId . $statusCode . $grossAmountBulat . $serverKey);
 
-        if (!$booking) return;
+        if ($signatureKey !== $expectedSignature) {
+            return response()->json(['message' => 'Invalid signature'], 403);
+        }
 
-        if ($status == 'settlement') {
+        // Ambil booking ID dari order_id (format: BOOK-{id}-timestamp)
+        $parts = explode('-', $orderId);
+        $bookingId = $parts[1] ?? null;
+
+        if (!$bookingId) {
+            return response()->json(['message' => 'Invalid order id'], 400);
+        }
+
+        $booking = Booking::find($bookingId);
+
+        if (!$booking) {
+            return response()->json(['message' => 'Booking not found'], 404);
+        }
+
+        $transactionStatus = $request->transaction_status;
+        $fraudStatus       = $request->fraud_status;
+
+        // Logika pengubahan status
+        if ($transactionStatus == 'settlement' || ($transactionStatus == 'capture' && $fraudStatus == 'accept')) {
+            
+            // FIX 2: Ubah status menjadi 'processing' agar masuk hitungan statistik dashboard Reader
             $booking->update([
                 'payment_status' => 'paid',
-                'status' => 'scheduled'
+                'status'         => 'processing' 
             ]);
-        } elseif ($status == 'pending') {
+
+        } elseif (in_array($transactionStatus, ['cancel', 'deny', 'expire'])) {
+            $booking->update([
+                'payment_status' => 'failed',
+                'status'         => 'cancelled'
+            ]);
+        } elseif ($transactionStatus == 'pending') {
             $booking->update([
                 'payment_status' => 'pending'
             ]);
-        } elseif ($status == 'expire') {
-            $booking->update([
-                'payment_status' => 'failed'
-            ]);
         }
+
+        return response()->json(['message' => 'OK'], 200);
     }
 
     public function storeTestimonial(Request $request)

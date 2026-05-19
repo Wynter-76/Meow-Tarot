@@ -832,3 +832,176 @@ body {
         left: -25%;
     }
 }
+
+/* ================================================
+   TAROT CARDS BACKGROUND
+   Paste bagian ini di paling bawah style.css lu
+   ================================================ */
+ 
+.tarot-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+}
+ 
+.tarot-card {
+    position: absolute;
+    width: 72px;
+    height: 115px;
+    border-radius: 10px;
+}
+ 
+.tarot-card-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(155deg, #1e0645 0%, #4a1280 50%, #1e0645 100%);
+    border: 1.5px solid rgba(255, 220, 100, 0.35);
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.45),
+        inset 0 0 18px rgba(160, 60, 255, 0.25);
+}
+ 
+.tarot-card-back {
+    position: absolute;
+    inset: 0;
+    background-image:
+        repeating-linear-gradient(
+             45deg, transparent, transparent 5px,
+             rgba(255,255,255,0.045) 5px, rgba(255,255,255,0.045) 6px
+        ),
+        repeating-linear-gradient(
+            -45deg, transparent, transparent 5px,
+             rgba(255,255,255,0.045) 5px, rgba(255,255,255,0.045) 6px
+        );
+}
+ 
+.tarot-border-outer {
+    position: absolute;
+    inset: 5px;
+    border: 1px solid rgba(255, 210, 80, 0.35);
+    border-radius: 6px;
+}
+ 
+.tarot-border-inner {
+    position: absolute;
+    inset: 9px;
+    border: 1px solid rgba(255, 210, 80, 0.18);
+    border-radius: 4px;
+}
+ 
+.tarot-dot {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 210, 80, 0.4);
+    border-radius: 50%;
+}
+.tarot-dot.tl { top: 13px;    left: 10px;  }
+.tarot-dot.tr { top: 13px;    right: 10px; }
+.tarot-dot.bl { bottom: 13px; left: 10px;  }
+.tarot-dot.br { bottom: 13px; right: 10px; }
+ 
+.tarot-symbol {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: rgba(255, 210, 90, 0.55);
+    text-shadow: 0 0 14px rgba(255, 170, 30, 0.5);
+    z-index: 2;
+}
+ 
+/* ===== Posisi 30 kartu ===== */
+ 
+/* Tepi kiri */
+.tc1  { top: 2%;    left: 1%;    animation: tf1  14s ease-in-out infinite; }
+.tc2  { top: 26%;   left: 0.5%;  animation: tf2  19s ease-in-out infinite; animation-delay: -4s; }
+.tc3  { top: 53%;   left: 1%;    animation: tf3  16s ease-in-out infinite; animation-delay: -8s; }
+.tc4  { bottom: 3%; left: 2%;    animation: tf4  21s ease-in-out infinite; animation-delay: -12s; }
+ 
+/* Tepi kanan */
+.tc5  { top: 2%;    right: 1%;   animation: tf5  13s ease-in-out infinite; animation-delay: -2s; }
+.tc6  { top: 28%;   right: 0.5%; animation: tf6  18s ease-in-out infinite; animation-delay: -6s; }
+.tc7  { top: 55%;   right: 1%;   animation: tf7  20s ease-in-out infinite; animation-delay: -10s; }
+.tc8  { bottom: 3%; right: 2%;   animation: tf8  15s ease-in-out infinite; animation-delay: -7s; }
+ 
+/* Kolom kiri 2 */
+.tc9  { top: 2%;    left: 11%;   animation: tf9  23s ease-in-out infinite; animation-delay: -3s;  opacity: .7; }
+.tc10 { top: 27%;   left: 10%;   animation: tf10 26s ease-in-out infinite; animation-delay: -9s;  opacity: .65; }
+.tc11 { top: 54%;   left: 11%;   animation: tf11 22s ease-in-out infinite; animation-delay: -15s; opacity: .65; }
+.tc12 { bottom: 3%; left: 12%;   animation: tf12 17s ease-in-out infinite; animation-delay: -5s;  opacity: .7; }
+ 
+/* Kolom kanan 2 */
+.tc13 { top: 2%;    right: 11%;  animation: tf13 20s ease-in-out infinite; animation-delay: -7s;  opacity: .7; }
+.tc14 { top: 29%;   right: 10%;  animation: tf14 25s ease-in-out infinite; animation-delay: -11s; opacity: .65; }
+.tc15 { top: 56%;   right: 11%;  animation: tf15 18s ease-in-out infinite; animation-delay: -3s;  opacity: .65; }
+.tc16 { bottom: 3%; right: 12%;  animation: tf16 24s ease-in-out infinite; animation-delay: -14s; opacity: .7; }
+ 
+/* Kolom kiri 3 — dekat form */
+.tc17 { top: 3%;    left: 22%;   animation: tf17 28s ease-in-out infinite; animation-delay: -6s;  opacity: .45; }
+.tc18 { top: 30%;   left: 20%;   animation: tf18 30s ease-in-out infinite; animation-delay: -16s; opacity: .4; }
+.tc19 { top: 57%;   left: 21%;   animation: tf19 27s ease-in-out infinite; animation-delay: -9s;  opacity: .4; }
+.tc20 { bottom: 3%; left: 23%;   animation: tf20 29s ease-in-out infinite; animation-delay: -4s;  opacity: .45; }
+ 
+/* Kolom kanan 3 — dekat form */
+.tc21 { top: 3%;    right: 22%;  animation: tf21 26s ease-in-out infinite; animation-delay: -13s; opacity: .45; }
+.tc22 { top: 32%;   right: 20%;  animation: tf22 31s ease-in-out infinite; animation-delay: -7s;  opacity: .4; }
+.tc23 { top: 58%;   right: 21%;  animation: tf23 28s ease-in-out infinite; animation-delay: -18s; opacity: .4; }
+.tc24 { bottom: 3%; right: 23%;  animation: tf24 25s ease-in-out infinite; animation-delay: -11s; opacity: .45; }
+ 
+/* Atas & bawah tengah — mengisi gap */
+.tc25 { top: 2%;    left: 34%;   animation: tf25 32s ease-in-out infinite; animation-delay: -5s;  opacity: .3; }
+.tc26 { top: 2%;    right: 34%;  animation: tf26 29s ease-in-out infinite; animation-delay: -20s; opacity: .3; }
+.tc27 { bottom: 3%; left: 34%;   animation: tf27 33s ease-in-out infinite; animation-delay: -8s;  opacity: .3; }
+.tc28 { bottom: 3%; right: 34%;  animation: tf28 27s ease-in-out infinite; animation-delay: -17s; opacity: .3; }
+.tc29 { top: 50%;   left: 32%;   animation: tf29 35s ease-in-out infinite; animation-delay: -22s; opacity: .25; }
+.tc30 { top: 50%;   right: 32%;  animation: tf30 34s ease-in-out infinite; animation-delay: -10s; opacity: .25; }
+ 
+/* ===== Keyframes ===== */
+@keyframes tf1  { 0%,100%{transform:translateY(0) rotate(-14deg);}  50%{transform:translateY(-22px) rotate(-8deg);} }
+@keyframes tf2  { 0%,100%{transform:translateY(0) rotate(20deg);}   50%{transform:translateY(-16px) rotate(14deg);} }
+@keyframes tf3  { 0%,100%{transform:translateY(0) rotate(8deg);}    50%{transform:translateY(-20px) rotate(13deg);} }
+@keyframes tf4  { 0%,100%{transform:translateY(0) rotate(-5deg);}   50%{transform:translateY(-18px) rotate(-11deg);} }
+@keyframes tf5  { 0%,100%{transform:translateY(0) rotate(16deg);}   50%{transform:translateY(-26px) rotate(10deg);} }
+@keyframes tf6  { 0%,100%{transform:translateY(0) rotate(-19deg);}  50%{transform:translateY(-18px) rotate(-12deg);} }
+@keyframes tf7  { 0%,100%{transform:translateY(0) rotate(-9deg);}   50%{transform:translateY(-22px) rotate(-15deg);} }
+@keyframes tf8  { 0%,100%{transform:translateY(0) rotate(6deg);}    50%{transform:translateY(-19px) rotate(12deg);} }
+@keyframes tf9  { 0%,100%{transform:translateY(0) scale(.82) rotate(-25deg);} 50%{transform:translateY(-14px) scale(.82) rotate(-18deg);} }
+@keyframes tf10 { 0%,100%{transform:translateY(0) scale(.78) rotate(18deg);}  50%{transform:translateY(-12px) scale(.78) rotate(11deg);} }
+@keyframes tf11 { 0%,100%{transform:translateY(0) scale(.8)  rotate(-8deg);}  50%{transform:translateY(-15px) scale(.8)  rotate(-14deg);} }
+@keyframes tf12 { 0%,100%{transform:translateY(0) scale(.75) rotate(28deg);}  50%{transform:translateY(-13px) scale(.75) rotate(20deg);} }
+@keyframes tf13 { 0%,100%{transform:translateY(0) scale(.8)  rotate(-22deg);} 50%{transform:translateY(-14px) scale(.8)  rotate(-15deg);} }
+@keyframes tf14 { 0%,100%{transform:translateY(0) scale(.77) rotate(10deg);}  50%{transform:translateY(-12px) scale(.77) rotate(16deg);} }
+@keyframes tf15 { 0%,100%{transform:translateY(0) scale(.79) rotate(-30deg);} 50%{transform:translateY(-13px) scale(.79) rotate(-22deg);} }
+@keyframes tf16 { 0%,100%{transform:translateY(0) scale(.76) rotate(15deg);}  50%{transform:translateY(-11px) scale(.76) rotate(8deg);} }
+@keyframes tf17 { 0%,100%{transform:translateY(0) scale(.62) rotate(-30deg);} 50%{transform:translateY(-10px) scale(.62) rotate(-22deg);} }
+@keyframes tf18 { 0%,100%{transform:translateY(0) scale(.58) rotate(25deg);}  50%{transform:translateY(-9px)  scale(.58) rotate(17deg);} }
+@keyframes tf19 { 0%,100%{transform:translateY(0) scale(.6)  rotate(-15deg);} 50%{transform:translateY(-8px)  scale(.6)  rotate(-8deg);} }
+@keyframes tf20 { 0%,100%{transform:translateY(0) scale(.63) rotate(32deg);}  50%{transform:translateY(-10px) scale(.63) rotate(24deg);} }
+@keyframes tf21 { 0%,100%{transform:translateY(0) scale(.61) rotate(-5deg);}  50%{transform:translateY(-9px)  scale(.61) rotate(-12deg);} }
+@keyframes tf22 { 0%,100%{transform:translateY(0) scale(.59) rotate(18deg);}  50%{transform:translateY(-8px)  scale(.59) rotate(11deg);} }
+@keyframes tf23 { 0%,100%{transform:translateY(0) scale(.62) rotate(-28deg);} 50%{transform:translateY(-10px) scale(.62) rotate(-20deg);} }
+@keyframes tf24 { 0%,100%{transform:translateY(0) scale(.6)  rotate(12deg);}  50%{transform:translateY(-9px)  scale(.6)  rotate(6deg);} }
+@keyframes tf25 { 0%,100%{transform:translateY(0) scale(.5)  rotate(-20deg);} 50%{transform:translateY(-7px)  scale(.5)  rotate(-12deg);} }
+@keyframes tf26 { 0%,100%{transform:translateY(0) scale(.48) rotate(22deg);}  50%{transform:translateY(-6px)  scale(.48) rotate(14deg);} }
+@keyframes tf27 { 0%,100%{transform:translateY(0) scale(.52) rotate(-8deg);}  50%{transform:translateY(-8px)  scale(.52) rotate(-15deg);} }
+@keyframes tf28 { 0%,100%{transform:translateY(0) scale(.49) rotate(16deg);}  50%{transform:translateY(-7px)  scale(.49) rotate(9deg);} }
+@keyframes tf29 { 0%,100%{transform:translateY(0) scale(.45) rotate(-35deg);} 50%{transform:translateY(-6px)  scale(.45) rotate(-26deg);} }
+@keyframes tf30 { 0%,100%{transform:translateY(0) scale(.47) rotate(30deg);}  50%{transform:translateY(-5px)  scale(.47) rotate(21deg);} }
+ 
+/* Responsive */
+@media (max-width: 480px) {
+    .tarot-card { width: 56px; height: 90px; }
+    .tarot-symbol { font-size: 22px; }
+    .tc17, .tc18, .tc19, .tc20,
+    .tc21, .tc22, .tc23, .tc24,
+    .tc25, .tc26, .tc27, .tc28,
+    .tc29, .tc30 { display: none; }
+}
+

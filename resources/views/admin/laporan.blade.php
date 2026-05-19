@@ -1,130 +1,201 @@
 @extends('layouts.dashboard')
-
-@section('title','Laporan')
-
+@section('title', 'Laporan')
 @section('content')
 
-<!-- Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Laporan Sistem</h1>
-
-    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-        <i class="fas fa-download fa-sm text-white-50"></i>
-        Export PDF
-    </a>
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Laporan Transaksi</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Laporan</li>
+                </ol>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- Statistik -->
-<div class="row">
+<section class="content">
+    <div class="container-fluid">
 
-    <!-- Total User -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                    Total User
+        {{-- Summary Cards --}}
+        <div class="row">
+            <div class="col-md-4">
+                <div class="info-box bg-gradient-primary">
+                    <span class="info-box-icon text-white"><i class="fas fa-shopping-cart"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text text-white" style="color: #fff !important; font-weight: 500;">Total Transaksi</span>
+                        <span class="info-box-number text-white" style="color: #fff !important; font-size: 1.5rem; font-weight: 700;">{{ $totalBooking }}</span>
+                    </div>
                 </div>
-
-                <div class="h5 mb-0 font-weight-bold text-gray-800">
-                    {{ $totalUser }}
+            </div>
+            <div class="col-md-4">
+                <div class="info-box bg-gradient-success">
+                    <span class="info-box-icon text-white"><i class="fas fa-money-bill-wave"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text text-white" style="color: #fff !important; font-weight: 500;">Total Revenue (Paid)</span>
+                        <span class="info-box-number text-white" style="color: #fff !important; font-size: 1.5rem; font-weight: 700;">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="info-box bg-gradient-warning">
+                    <span class="info-box-icon text-white"><i class="fas fa-clock"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text text-white" style="color: #fff !important; font-weight: 500;">Pending Pembayaran</span>
+                        <span class="info-box-number text-white" style="color: #fff !important; font-size: 1.5rem; font-weight: 700;">{{ $totalPending }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="info-box bg-gradient-info">
+                    <span class="info-box-icon text-white"><i class="fas fa-check-circle"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text text-white" style="color: #fff !important; font-weight: 500;">Transaksi Lunas</span>
+                        <span class="info-box-number text-white" style="color: #fff !important; font-size: 1.5rem; font-weight: 700;">{{ $totalPaid }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="info-box bg-gradient-danger">
+                    <span class="info-box-icon text-white"><i class="fas fa-times-circle"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text text-white" style="color: #fff !important; font-weight: 500;">Transaksi Dibatalkan</span>
+                        <span class="info-box-number text-white" style="color: #fff !important; font-size: 1.5rem; font-weight: 700;">{{ $totalCancelled }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="info-box bg-gradient-secondary">
+                    <span class="info-box-icon text-white"><i class="fas fa-calendar-check"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text text-white" style="color: #fff !important; font-weight: 500;">Terjadwal</span>
+                        <span class="info-box-number text-white" style="color: #fff !important; font-size: 1.5rem; font-weight: 700;">{{ $totalScheduled }}</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Booking -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
-            <div class="card-body">
-                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                    Total Booking
+        {{-- Top Info --}}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-outline card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-star mr-1"></i> Paket Terpopuler</h3>
+                    </div>
+                    <div class="card-body">
+                        @if($topPackage && $topPackage->package)
+                            <h4>{{ $topPackage->package->name }}</h4>
+                            <p class="text-muted">Dipesan sebanyak <strong>{{ $topPackage->total }}</strong> kali</p>
+                        @else
+                            <p class="text-muted">Belum ada data</p>
+                        @endif
+                    </div>
                 </div>
-
-                <div class="h5 mb-0 font-weight-bold text-gray-800">
-                    {{ $totalBooking }}
+            </div>
+            <div class="col-md-6">
+                <div class="card card-outline card-success">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-user mr-1"></i> Customer Terbanyak Order</h3>
+                    </div>
+                    <div class="card-body">
+                        @if($topCustomer && $topCustomer->user)
+                            <h4>{{ $topCustomer->user->name }}</h4>
+                            <p class="text-muted">Total order: <strong>{{ $topCustomer->total }}</strong> kali</p>
+                        @else
+                            <p class="text-muted">Belum ada data</p>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Omzet -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-info shadow h-100 py-2">
-            <div class="card-body">
-                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                    Total Pendapatan
-                </div>
-
-                <div class="h5 mb-0 font-weight-bold text-gray-800">
-                    Rp {{ number_format($totalIncome,0,',','.') }}
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Pending -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
-            <div class="card-body">
-                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                    Pending Booking
-                </div>
-
-                <div class="h5 mb-0 font-weight-bold text-gray-800">
-                    {{ $pending }}
+        {{-- Tabel Transaksi + Export --}}
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-table mr-1"></i> Detail Semua Transaksi</h3>
+                <div class="card-tools">
+                    <a href="{{ route('admin.laporan.pdf') }}" class="btn btn-sm btn-danger">
+                        <i class="fas fa-file-pdf"></i> Export PDF
+                    </a>
+                    <a href="{{ route('admin.laporan.excel') }}" class="btn btn-sm btn-success ml-1">
+                        <i class="fas fa-file-excel"></i> Export Excel
+                    </a>
                 </div>
             </div>
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover table-striped table-sm" id="laporanTable">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Customer</th>
+                            <th>Email</th>
+                            <th>Paket</th>
+                            <th>Tipe</th>
+                            <th>Tanggal</th>
+                            <th>Status</th>
+                            <th>Status Bayar</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($bookings as $i => $b)
+                        <tr>
+                            <td>{{ $i + 1 }}</td>
+                            <td>{{ $b->name }}</td>
+                            <td>{{ $b->email }}</td>
+                            <td>{{ $b->package->name ?? '-' }}</td>
+                            <td>{{ ucfirst($b->type) }}</td>
+                            <td>{{ $b->booking_date }}</td>
+                            <td>
+                                @php
+                                    $statusColor = match($b->status) {
+                                        'pending'   => 'warning',
+                                        'scheduled' => 'info',
+                                        'done'      => 'success',
+                                        'cancelled' => 'danger',
+                                        default     => 'secondary'
+                                    };
+                                @endphp
+                                <span class="badge badge-{{ $statusColor }}">
+                                    {{ ucfirst($b->status) }}
+                                </span>
+                            </td>
+                            <td>
+                                @php
+                                    $payColor = match($b->payment_status) {
+                                        'paid'    => 'success',
+                                        'pending' => 'warning',
+                                        'failed'  => 'danger',
+                                        default   => 'secondary'
+                                    };
+                                @endphp
+                                <span class="badge badge-{{ $payColor }}">
+                                    {{ ucfirst($b->payment_status) }}
+                                </span>
+                            </td>
+                            <td>Rp {{ number_format($b->total_price, 0, ',', '.') }}</td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="9" class="text-center text-muted">Belum ada transaksi</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                    <tfoot>
+                        <tr class="bg-light font-weight-bold">
+                            <td colspan="8" class="text-right">Total Revenue (Paid):</td>
+                            <td>Rp {{ number_format($totalRevenue, 0, ',', '.') }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-
-</div>
-
-<!-- Table -->
-<div class="card shadow mb-4">
-
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">
-            Booking Terbaru
-        </h6>
-    </div>
-
-    <div class="card-body">
-
-        <div class="table-responsive">
-
-            <table class="table table-bordered">
-
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Customer</th>
-                        <th>Paket</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                @foreach($latest as $item)
-
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $item->name }}</td>
-                        <td>{{ $item->package->name ?? '-' }}</td>
-                        <td>Rp {{ number_format($item->total_price,0,',','.') }}</td>
-                        <td>{{ ucfirst($item->status) }}</td>
-                    </tr>
-
-                @endforeach
-
-                </tbody>
-
-            </table>
-
-        </div>
 
     </div>
-</div>
+</section>
 
 @endsection
