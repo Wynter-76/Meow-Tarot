@@ -25,11 +25,6 @@
 
             <ul class="nav navbar-nav navbar-right">
 
-                <li>
-                    <a href="#">
-                        <i class="fa fa-shopping-cart"></i> Cart
-                    </a>
-                </li>
 
                 @guest
                     <li>

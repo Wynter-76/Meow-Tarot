@@ -49,7 +49,7 @@
     <div class="booking-banner">
         <div class="container">
             <div class="wow fadeInDown">
-                <img src="{{ asset('cust/image/background_tarot.jpg') }}" alt="Call Session Banner">
+                <img src="{{ asset('cust/image/call.jpg') }}" alt="Call Session Banner">
                 <h1 class="section-title mt-5">VOICE CALL SESSION</h1>
                 <p style="color: #888; letter-spacing: 2px;">Dengarkan suara semesta melalui panduan langsung kami.</p>
             </div>

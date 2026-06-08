@@ -65,6 +65,7 @@
                         </td>
                     </tr>
 
+                    {{-- MODAL EDIT USER --}}
                     <div class="modal fade" id="modalEditUser{{ $item->id }}">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -80,6 +81,11 @@
                                         
                                         <label>Email</label>
                                         <input type="email" name="email" class="form-control mb-2" value="{{ $item->email }}" required>
+
+                                        {{-- INPUT PASSWORD BARU (Kunci Fleksibel) --}}
+                                        <label>Password Baru</label>
+                                        <input type="password" name="password" class="form-control mb-1" placeholder="Masukkan password baru">
+                                        <small class="text-muted d-block mb-3">*Kosongkan jika tidak ingin mengganti password</small>
 
                                         <label>Role</label>
                                         <select name="role" class="form-control">
@@ -108,6 +114,7 @@
     </div>
 </div>
 
+{{-- MODAL TAMBAH USER --}}
 <div class="modal fade" id="modalTambahUser">
     <div class="modal-dialog">
         <div class="modal-content">

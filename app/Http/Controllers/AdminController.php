@@ -97,13 +97,19 @@ class AdminController extends Controller
 
     public function updateUser(Request $request, $id)
     {
-        User::findOrFail($id)->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'role' => $request->role
-        ]);
+        $user = User::findOrFail($id);
+        
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role;
 
-        return back()->with('success','User diupdate');
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'User berhasil diupdate!');
     }
 
     public function deleteUser($id)
@@ -177,7 +183,6 @@ class AdminController extends Controller
 
     public function laporan()
     {
-        // Summary cards
         $totalBooking     = Booking::count();
         $totalRevenue     = Booking::where('payment_status', 'paid')->sum('total_price');
         $totalPaid        = Booking::where('payment_status', 'paid')->count();
@@ -185,21 +190,18 @@ class AdminController extends Controller
         $totalCancelled   = Booking::where('status', 'cancelled')->count();
         $totalScheduled   = Booking::where('status', 'scheduled')->count();
 
-        // Paket terpopuler
         $topPackage = Booking::select('package_id', DB::raw('count(*) as total'))
                         ->groupBy('package_id')
                         ->orderByDesc('total')
                         ->with('package')
                         ->first();
 
-        // Customer terbanyak order
         $topCustomer = Booking::select('user_id', DB::raw('count(*) as total'))
                         ->groupBy('user_id')
                         ->orderByDesc('total')
                         ->with('user')
                         ->first();
 
-        // List semua transaksi
         $bookings = Booking::with(['user', 'package'])
                         ->latest()
                         ->get();

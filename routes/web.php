@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/testimonial', [CustomerController::class, 'testimonial'])->name('customer.testimonial_cust');
     Route::post('/testimonial/store', [CustomerController::class, 'storeTestimonial']);
     Route::get('/payment/{id}', [CustomerController::class, 'payment']);
+    Route::get('/booking/success/{id}', [CustomerController::class, 'bookingSuccess']);
     Route::get('/history', [CustomerController::class, 'history']);
     Route::post('/contact/send', [CustomerController::class, 'sendContact']);
 });

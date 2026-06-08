@@ -92,7 +92,7 @@
                         </td>
                         
                         <td>
-                            @if($item->status == 'pending')
+                            @if($item->status == 'pending' && $item->payment_status == 'paid')
                                 <a href="{{ url('/admin/approve/'.$item->id) }}"
                                 class="btn btn-success btn-sm">
                                     Approve
@@ -103,6 +103,8 @@
                                 onclick="return confirm('Yakin mau reject booking ini?')">
                                     Reject
                                 </a>
+                            @elseif($item->status == 'pending' && $item->payment_status != 'paid')
+                                <span class="badge badge-secondary">Menunggu Pembayaran</span>
                             @else
                                 <span class="text-muted">-</span>
                             @endif

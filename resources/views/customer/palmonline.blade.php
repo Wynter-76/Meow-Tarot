@@ -64,7 +64,7 @@
     <div class="booking-banner">
         <div class="container">
             <div class="wow fadeInDown">
-                <img src="{{ asset('cust/image/background_tarot.jpg') }}" alt="Palm Reading">
+                <img src="{{ asset('cust/image/palreading.jpg') }}" alt="Palm Reading">
                 <h1 class="section-title mt-5">PALM READING ONLINE</h1>
                 <p style="color: #888; letter-spacing: 2px;">Garis tanganmu menyimpan cerita. Ungkap rahasianya sekarang.</p>
             </div>

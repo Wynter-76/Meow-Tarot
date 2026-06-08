@@ -44,7 +44,7 @@
     <div class="booking-banner">
         <div class="container">
             <div class="wow fadeInDown">
-                <img src="{{ asset('cust/image/background_tarot.jpg') }}" alt="Palm Reading Offline">
+                <img src="{{ asset('cust/image/palreading.jpg') }}" alt="Palm Reading Offline">
                 <h1 class="section-title mt-5">PALM READING OFFLINE</h1>
                 <p style="color: #888; letter-spacing: 2px;">Bertemu langsung untuk pembacaan energi yang lebih dalam.</p>
             </div>

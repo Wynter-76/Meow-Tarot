@@ -1,3 +1,6 @@
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
 <style>
     .footer-section {
         background-color: #050505;
@@ -130,10 +133,28 @@
                 </ul>
             </div>
 
-            {{-- Social Media --}}
+            {{-- Social Media Connect --}}
             <div class="col-md-4 text-center text-md-end">
                 <h5 style="color: #d4af37; margin-bottom: 20px; font-weight: bold;">CONNECT</h5>
                 <ul class="social-media justify-content-center justify-content-md-end">
-                    <li><a href="https://wa.me/085707950850" target="_blank" class="fa fa-whatsapp">
-                    <li><a href="" target="_blank" aria-label="Tiktok"></a></li>
-                
+                    {{-- Ganti di bagian CONNECT yang tadi --}}
+                    <li>
+                        <a href="https://wa.me/6285649471086" target="_blank" aria-label="WhatsApp">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.tiktok.com/@tarotmeow111?_r=1&_t=ZS-96TqrdpeNML" target="_blank" aria-label="TikTok">
+                            <i class="fa-brands fa-tiktok"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div> {{-- End of Row --}}
+
+        {{-- Copyright Bar --}}
+        <div class="footer-bottom">
+            <p class="m-0">&copy; {{ date('Y') }} Mystic Tarot. All Rights Reserved.</p>
+        </div>
+    </div> {{-- End of Container --}}
+</div>

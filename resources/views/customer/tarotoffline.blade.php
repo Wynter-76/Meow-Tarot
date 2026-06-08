@@ -146,9 +146,6 @@
                 <input type="hidden" name="type" value="offline">
                 <input type="hidden" name="package_id" value="{{ $package->id }}">
                 <input type="hidden" id="base-price" value="{{ $package->price }}">
-                
-                {{-- Limit pertanyaan dari relasi paket untuk dibaca script JS --}}
-                <input type="hidden" id="question-limit" value="{{ $package->question_limit ?? 0 }}">
 
                 <div class="row">
                     <div class="col-md-12 text-center mb-4">
@@ -157,6 +154,14 @@
                     </div>
 
                     {{-- Data Pribadi --}}
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <div class="alert alert-info border-0 text-center" style="background: rgba(212, 175, 55, 0.1); color: #d4af37; border-radius: 12px; font-size: 0.9rem;">
+                                🔮 <strong>Info Sesi:</strong> Durasi dan jumlah bahasan disesuaikan langsung di tempat berdasarkan paket <strong>{{ $package->name }}</strong> yang Anda pilih.
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-md-12">
                         <div class="mb-3">
                             <label class="form-label">Nama Lengkap</label>
@@ -190,7 +195,7 @@
                         <div class="mb-3">
                             <label class="form-label">Pilih Jam</label>
                             <select name="booking_time" id="booking_time" class="form-select" required>
-                                <option value="" selected disabled>-- Pilih Tanggal Terlebih Dahulu --</option>
+                                <option value="" selected disabled>-- Pilih Jam Pertemuan --</option>
                                 <option value="15:00">15:00</option>
                                 <option value="16:00">16:00</option>
                                 <option value="17:00">17:00</option>
@@ -203,9 +208,6 @@
                             </select>
                         </div>
                     </div>
-
-                    {{-- Wrapper Tempat Munculnya Textarea Pertanyaan Otomatis --}}
-                    <div class="col-md-12" id="question-wrapper"></div>
 
                     {{-- Total Harga & Submit --}}
                     <div class="col-md-12 text-center mt-4">

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Package;
 use App\Models\Booking;
+use App\Models\Payment;
 use App\Models\Question;
 use App\Models\File;
 use App\Models\Addon;
@@ -15,6 +16,7 @@ use App\Models\daily_card;
 use Midtrans\Config;
 use Midtrans\Snap;
 use Midtrans\Notification;
+use Midtrans\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -219,10 +221,12 @@ class CustomerController extends Controller
             abort(400, 'Total price tidak valid');
         }
 
+        $orderId = 'BOOK-'.$booking->id.'-'.time();
+
         $params = [
 
         'transaction_details' => [
-            'order_id' => 'BOOK-'.$booking->id.'-'.time(),
+            'order_id' => $orderId,
             'gross_amount' => (int) $booking->total_price,
         ],
 
@@ -254,26 +258,62 @@ class CustomerController extends Controller
         ]
     ];
         $snapToken = Snap::getSnapToken($params);
+
+        Payment::updateOrCreate(
+            ['order_id' => $orderId],
+            [
+                'booking_id'         => $booking->id,
+                'transaction_status' => 'pending',
+                'gross_amount'       => $amount,
+            ]
+        );
+
         return view('customer.payment', compact('booking','snapToken'));
     }
 
     public function callback(Request $request)
     {
+
+        Log::info('[MIDTRANS CALLBACK] Hit diterima', [
+            'ip'      => $request->ip(),
+            'payload' => $request->all(),
+        ]);
+
         $serverKey = config('midtrans.server_key');
 
+        if (empty($serverKey)) {
+            Log::error('[MIDTRANS CALLBACK] MIDTRANS_SERVER_KEY kosong di .env');
+            return response()->json(['message' => 'Server key not configured'], 500);
+        }
+
         // Ambil data dari request Midtrans
-        $orderId      = $request->order_id;
-        $statusCode   = $request->status_code;
-        $grossAmount  = $request->gross_amount;
-        $signatureKey = $request->signature_key;
+        $orderId      = $request->input('order_id');
+        $statusCode   = $request->input('status_code');
+        $grossAmount  = $request->input('gross_amount');
+        $signatureKey = $request->input('signature_key');
 
-        // FIX 1: Hilangkan desimal .00 dari Midtrans agar signature COCOK
-        $grossAmountBulat = number_format((float)$grossAmount, 0, '.', '');
+        if (!$orderId || !$statusCode || !$grossAmount || !$signatureKey) {
+            Log::warning('[MIDTRANS CALLBACK] Field penting kosong', $request->all());
+            return response()->json(['message' => 'Bad payload'], 400);
+        }
 
-        // Hitung ulang expected signature
-        $expectedSignature = hash('sha512', $orderId . $statusCode . $grossAmountBulat . $serverKey);
+        // Coba beberapa format gross_amount karena Midtrans kadang
+        // pakai "150000" dan kadang "150000.00" untuk hashing signature
+        $expectedAsIs    = hash('sha512', $orderId . $statusCode . $grossAmount . $serverKey);
+        $expectedBulat   = hash('sha512', $orderId . $statusCode . number_format((float)$grossAmount, 0, '.', '') . $serverKey);
+        $expectedDecimal = hash('sha512', $orderId . $statusCode . number_format((float)$grossAmount, 2, '.', '') . $serverKey);
 
-        if ($signatureKey !== $expectedSignature) {
+        $valid = in_array($signatureKey, [$expectedAsIs, $expectedBulat, $expectedDecimal], true);
+
+        if (!$valid) {
+            Log::warning('[MIDTRANS CALLBACK] Signature INVALID', [
+                'order_id'        => $orderId,
+                'gross_amount'    => $grossAmount,
+                'signature_in'    => $signatureKey,
+                'expected_as_is'  => $expectedAsIs,
+                'expected_bulat'  => $expectedBulat,
+                'expected_decim'  => $expectedDecimal,
+            ]);
             return response()->json(['message' => 'Invalid signature'], 403);
         }
 
@@ -282,27 +322,27 @@ class CustomerController extends Controller
         $bookingId = $parts[1] ?? null;
 
         if (!$bookingId) {
+            Log::warning('[MIDTRANS CALLBACK] order_id tidak valid', ['order_id' => $orderId]);
             return response()->json(['message' => 'Invalid order id'], 400);
         }
 
         $booking = Booking::find($bookingId);
 
         if (!$booking) {
+            Log::warning('[MIDTRANS CALLBACK] Booking tidak ketemu', ['booking_id' => $bookingId]);
             return response()->json(['message' => 'Booking not found'], 404);
         }
 
-        $transactionStatus = $request->transaction_status;
-        $fraudStatus       = $request->fraud_status;
+        $transactionStatus = $request->input('transaction_status');
+        $fraudStatus       = $request->input('fraud_status');
+        $paymentType       = $request->input('payment_type');
 
-        // Logika pengubahan status
+        // Pembayaran sukses → cuma tandai payment_status=paid.
+        // Booking status tetap 'pending' menunggu approve admin di /admin/databooking
         if ($transactionStatus == 'settlement' || ($transactionStatus == 'capture' && $fraudStatus == 'accept')) {
-            
-            // FIX 2: Ubah status menjadi 'processing' agar masuk hitungan statistik dashboard Reader
             $booking->update([
                 'payment_status' => 'paid',
-                'status'         => 'processing' 
             ]);
-
         } elseif (in_array($transactionStatus, ['cancel', 'deny', 'expire'])) {
             $booking->update([
                 'payment_status' => 'failed',
@@ -313,6 +353,24 @@ class CustomerController extends Controller
                 'payment_status' => 'pending'
             ]);
         }
+
+        // Simpan / update record pembayaran di tabel payments
+        Payment::updateOrCreate(
+            ['order_id' => $orderId],
+            [
+                'booking_id'         => $booking->id,
+                'payment_type'       => $paymentType,
+                'transaction_status' => $transactionStatus,
+                'gross_amount'       => (int) $grossAmount,
+                'payment_time'       => now(),
+            ]
+        );
+
+        Log::info('[MIDTRANS CALLBACK] Status booking ter-update', [
+            'booking_id'         => $bookingId,
+            'transaction_status' => $transactionStatus,
+            'payment_status'     => $booking->fresh()->payment_status,
+        ]);
 
         return response()->json(['message' => 'OK'], 200);
     }
@@ -332,5 +390,78 @@ class CustomerController extends Controller
     {
         $data = Booking::where('user_id', Auth::id())->get();
         return view('customer.history', compact('data'));
+    }
+
+    public function bookingSuccess($id)
+    {
+        $booking = Booking::with('package')->where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        // Fallback: kalau webhook belum jalan, sync langsung ke Midtrans
+        if ($booking->payment_status !== 'paid') {
+            $this->syncMidtransStatus($booking);
+            $booking->refresh();
+        }
+
+        return view('customer.booking_success', compact('booking'));
+    }
+
+    /**
+     * Tanya status transaksi langsung ke Midtrans (bypass webhook).
+     * Dipakai sebagai pengaman kalau Notification URL belum di-set / ngrok mati.
+     */
+    protected function syncMidtransStatus(Booking $booking): void
+    {
+        try {
+            Config::$serverKey   = config('midtrans.server_key');
+            Config::$isProduction = config('midtrans.is_production');
+
+            // Cari order_id terbaru milik booking ini
+            $payment = Payment::where('booking_id', $booking->id)->latest()->first();
+            $orderId = $payment->order_id ?? null;
+
+            if (!$orderId) {
+                // Belum ada record payment sama sekali → tidak bisa cek
+                Log::info('[MIDTRANS SYNC] Tidak ada order_id untuk booking', ['booking_id' => $booking->id]);
+                return;
+            }
+
+            $status = Transaction::status($orderId);
+            $status = is_object($status) ? (array) $status : $status;
+
+            $transactionStatus = $status['transaction_status'] ?? null;
+            $fraudStatus       = $status['fraud_status'] ?? null;
+            $paymentType       = $status['payment_type'] ?? null;
+            $grossAmount       = $status['gross_amount'] ?? null;
+
+            if ($transactionStatus == 'settlement' || ($transactionStatus == 'capture' && $fraudStatus == 'accept')) {
+                // Hanya tandai pembayaran. Booking tetap 'pending' menunggu approve admin.
+                $booking->update(['payment_status' => 'paid']);
+            } elseif (in_array($transactionStatus, ['cancel', 'deny', 'expire'])) {
+                $booking->update(['payment_status' => 'failed', 'status' => 'cancelled']);
+            }
+
+            Payment::updateOrCreate(
+                ['order_id' => $orderId],
+                [
+                    'booking_id'         => $booking->id,
+                    'payment_type'       => $paymentType,
+                    'transaction_status' => $transactionStatus,
+                    'gross_amount'       => (int) $grossAmount,
+                    'payment_time'       => now(),
+                ]
+            );
+
+            Log::info('[MIDTRANS SYNC] Status disinkronkan', [
+                'booking_id'         => $booking->id,
+                'order_id'           => $orderId,
+                'transaction_status' => $transactionStatus,
+            ]);
+        } catch (\Throwable $e) {
+            Log::warning('[MIDTRANS SYNC] Gagal cek status: '.$e->getMessage(), [
+                'booking_id' => $booking->id,
+            ]);
+        }
     }
 }

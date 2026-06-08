@@ -61,7 +61,7 @@
     <div class="booking-banner">
         <div class="container">
             <div class="wow fadeInDown">
-                <img src="{{ asset('cust/image/background_tarot.jpg') }}" alt="Chat Session Banner">
+                <img src="{{ asset('cust/image/chat.jpg') }}" alt="Chat Session Banner">
                 <h1 class="section-title mt-5">CHAT SESSION</h1>
                 <p style="color: #888; letter-spacing: 2px;">Curahkan keresahanmu lewat pesan singkat yang bermakna.</p>
             </div>

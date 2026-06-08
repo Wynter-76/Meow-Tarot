@@ -437,19 +437,39 @@
     <div class="container text-center">
         <h2 class="section-title">CLIENTS ABOUT US</h2>
         <p class="mb-5 text-muted">Best Teachers Are Here For You</p>
+        
         <div class="row mt-4">
-            {{-- Testimonial items tetap 3 kolom seperti aslimu --}}
-            @foreach(['Tanny Tan', 'Georgie Drake', 'Elva McCoy'] as $name)
+            
             <div class="col-md-4">
                 <div class="client-item wow fadeInDown animated">
                     <div class="client-content text-left">
                         <i class="fa fa-quote-left"></i>
-                        <p class="small italic">"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore."</p>
+                        <p class="small italic">"Sangat terkesan dengan pembacaan kartu tarotnya! Penjelasannya sangat akurat dan benar-benar membantuku melihat situasi rumit dari perspektif baru. Rasanya jauh lebih tenang sekarang."</p>
                     </div>
-                    <h3 style="color: #d4af37; font-size: 1.1rem; margin-top: 20px;">{{ $name }}</h3>
+                    <h3 style="color: #d4af37; font-size: 1.1rem; margin-top: 20px;">Tanny Tan</h3>
                 </div>
             </div>
-            @endforeach
+
+            <div class="col-md-4">
+                <div class="client-item wow fadeInDown animated">
+                    <div class="client-content text-left">
+                        <i class="fa fa-quote-left"></i>
+                        <p class="small italic">"Awalnya iseng coba kirim foto telapak tangan untuk palm reading secara online, ternyata hasilnya detail banget! Garis hidup dan karier dibahas tuntas. Mindblowing sih, sangat direkomendasikan!"</p>
+                    </div>
+                    <h3 style="color: #d4af37; font-size: 1.1rem; margin-top: 20px;">Georgie Drake</h3>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="client-item wow fadeInDown animated">
+                    <div class="client-content text-left">
+                        <i class="fa fa-quote-left"></i>
+                        <p class="small italic">"Sesi pembacaannya nyaman banget, readernya ramah dan gak menghakimi sama sekali. Semua wejangan dan arahannya masuk akal buat panduan masa depanku. Bakal langganan terus di sini!"</p>
+                    </div>
+                    <h3 style="color: #d4af37; font-size: 1.1rem; margin-top: 20px;">Elva McCoy</h3>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
