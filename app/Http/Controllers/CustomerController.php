@@ -126,15 +126,32 @@ class CustomerController extends Controller
 
     public function sendContact(Request $request)
     {
-        $data = [
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'phone' => $request->phone ?? '-',
-                    'message' => $request->message,
-                ];
-        Mail::to('muafan99@gmail.com')->send(new ContactMail($data));
+        $request->validate([
+            'name'    => 'required|string|max:255',
+            'email'   => 'required|email',
+            'message' => 'required|string',
+        ]);
 
-        return back()->with('success','Pesan berhasil dikirim!');
+        $data = [
+            'name'    => $request->name,
+            'email'   => $request->email,
+            'phone'   => $request->phone ?? '-',
+            'message' => $request->message,
+        ];
+
+        try {
+            Mail::to('muafan99@gmail.com')->send(new ContactMail($data));
+        } catch (\Throwable $e) {
+            Log::error('ContactMail failed', [
+                'error' => $e->getMessage(),
+                'mailer' => config('mail.default'),
+                'host' => config('mail.mailers.smtp.host'),
+                'from' => config('mail.from.address'),
+            ]);
+            return back()->with('error', 'Gagal kirim email: ' . $e->getMessage());
+        }
+
+        return back()->with('success', 'Pesan berhasil dikirim!');
     }
 
     public function storeBooking(Request $request)
