@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\PackageApiController;
 use App\Http\Controllers\Api\AuthApiController;
 use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\Api\ProfileApiController;
+use App\Http\Controllers\Api\BookingApiController;
 
 // Endpoint untuk aplikasi mobile (tanpa session/CSRF).
 // Prefix "/api" otomatis ditambahkan oleh Laravel.
@@ -22,6 +23,12 @@ Route::delete('packages/{id}', [PackageApiController::class, 'destroy']);
 // --- Profile (customer & reader) ---
 Route::get('profile', [ProfileApiController::class, 'show']);
 Route::post('profile/update', [ProfileApiController::class, 'update']);
+
+// --- Bookings ---
+Route::get('bookings', [BookingApiController::class, 'index']);
+Route::post('bookings', [BookingApiController::class, 'store']);
+Route::put('bookings/{id}/cancel', [BookingApiController::class, 'cancel']);
+Route::get('readers', [BookingApiController::class, 'readers']);
 
 // --- Users ---
 Route::get('users', [UserApiController::class, 'index']);
