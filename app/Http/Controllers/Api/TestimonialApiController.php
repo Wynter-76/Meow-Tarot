@@ -33,4 +33,18 @@ class TestimonialApiController extends Controller
 
         return response()->json(['id' => $testi->id, 'message' => 'Ulasan terkirim'], 201);
     }
+
+    // DELETE /api/testimonials/{id}  (admin hapus ulasan)
+    public function destroy($id)
+    {
+        $testi = testimonials::find($id);
+
+        if (!$testi) {
+            return response()->json(['message' => 'Testimoni tidak ditemukan'], 404);
+        }
+
+        $testi->delete();
+
+        return response()->json(['message' => 'Testimoni dihapus']);
+    }
 }
