@@ -46,6 +46,11 @@
                                     <i class="fa fa-history"></i> Riwayat Booking
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ url('/rooms') }}" style="color: #d4af37 !important; padding: 10px 20px;">
+                                    <i class="fa fa-comments"></i> Room Chat
+                                </a>
+                            </li>
                             <li role="separator" class="divider" style="background-color: #3d3020; margin: 5px 0;"></li>
                             <li>
                                 <form action="/logout" method="POST" style="margin:0;">

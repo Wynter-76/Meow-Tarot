@@ -68,4 +68,9 @@ class Booking extends Model
     {
         return $this->hasOne(File::class, 'booking_id');
     }
+
+    public function room()
+    {
+        return $this->hasOne(ChatRoom::class, 'booking_id');
+    }
 }

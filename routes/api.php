@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ProfileApiController;
 use App\Http\Controllers\Api\BookingApiController;
 use App\Http\Controllers\Api\TestimonialApiController;
 use App\Http\Controllers\Api\AdminApiController;
+use App\Http\Controllers\Api\ChatApiController;
 
 // Endpoint untuk aplikasi mobile (tanpa session/CSRF).
 // Prefix "/api" otomatis ditambahkan oleh Laravel.
@@ -36,6 +37,13 @@ Route::get('reader/bookings', [BookingApiController::class, 'readerBookings']);
 Route::get('admin/bookings', [BookingApiController::class, 'adminBookings']);
 Route::get('readers', [BookingApiController::class, 'readers']);
 Route::put('reader/online', [BookingApiController::class, 'setOnline']);
+
+// --- Chat Room (customer <-> reader, tidak real-time / polling) ---
+Route::post('bookings/{id}/room', [ChatApiController::class, 'ensureRoom']);
+Route::get('rooms', [ChatApiController::class, 'index']);
+Route::get('rooms/{id}/messages', [ChatApiController::class, 'messages']);
+Route::post('rooms/{id}/messages', [ChatApiController::class, 'send']);
+Route::put('rooms/{id}/close', [ChatApiController::class, 'close']);
 
 // --- Testimonials ---
 Route::post('testimonials', [TestimonialApiController::class, 'store']);

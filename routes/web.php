@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ReaderController;
+use App\Http\Controllers\ChatController;
 
 
 Route::get('/', [CustomerController::class, 'home'])->name('customer.index_cust');
@@ -27,11 +28,23 @@ Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
 
+// Halaman demo untuk menguji fitur Chat Room (customer <-> reader)
+Route::get('/chat-demo', function () {
+    return view('chat_demo');
+});
+
 Route::get('/api/check-booked-time', [CustomerController::class, 'checkBookedTime']);
 
 Route::post('/midtrans/callback', [CustomerController::class, 'callback']);
 
 Route::middleware(['auth'])->group(function () {
+    // --- Chat Room (customer <-> reader, polling / tidak real-time) ---
+    Route::get('/rooms', [ChatController::class, 'index']);
+    Route::get('/rooms/booking/{id}', [ChatController::class, 'openByBooking']);
+    Route::get('/rooms/{id}', [ChatController::class, 'show'])->whereNumber('id');
+    Route::post('/rooms/{id}/send', [ChatController::class, 'send'])->whereNumber('id');
+    Route::get('/rooms/{id}/fetch', [ChatController::class, 'fetch'])->whereNumber('id');
+
     Route::get('/tarot/online/{id}', [CustomerController::class, 'tarotOnline']);
     Route::get('/tarot/offline/{id}', [CustomerController::class, 'tarotOffline']);
     Route::get('/palm/online/{id}', [CustomerController::class, 'palmOnline']);

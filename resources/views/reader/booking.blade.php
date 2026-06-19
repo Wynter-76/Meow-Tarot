@@ -82,6 +82,12 @@
 
                         <td>
 
+                            <a href="{{ url('/rooms/booking/'.$item->id) }}"
+                               class="btn btn-sm mb-1"
+                               style="background:#7c5cff; color:#fff;">
+                                <i class="fas fa-comments"></i> Chat
+                            </a>
+
                             @if($item->status == 'scheduled')
 
                                 <a href="{{ url('/reader/start/'.$item->id) }}"

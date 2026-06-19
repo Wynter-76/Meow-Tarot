@@ -87,6 +87,13 @@
         </a>
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url('/rooms') }}">
+            <i class="fas fa-comments"></i>
+            <span>Room Chat</span>
+        </a>
+    </li>
+
     @endif
 
     <hr class="sidebar-divider d-none d-md-block">

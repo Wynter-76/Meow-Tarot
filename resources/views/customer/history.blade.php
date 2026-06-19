@@ -123,6 +123,7 @@
                             <th class="text-center">Pembayaran</th>
                             <th class="text-center">Status Sesi</th>
                             <th>Hasil Pembacaan (Reading)</th>
+                            <th class="text-center">Room</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -173,10 +174,22 @@
                                         <span class="text-muted small"><i class="fas fa-lock me-1"></i>Menunggu sesi selesai...</span>
                                     @endif
                                 </td>
+
+                                <td class="text-center">
+                                    @if($item->status != 'cancelled')
+                                        <a href="{{ url('/rooms/booking/'.$item->id) }}"
+                                           class="btn btn-sm rounded-pill"
+                                           style="background:#7c5cff; color:#fff; border:none; padding:6px 16px;">
+                                            <i class="fas fa-comments me-1"></i> Chat
+                                        </a>
+                                    @else
+                                        <span class="text-muted small">-</span>
+                                    @endif
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center py-5">
+                                <td colspan="6" class="text-center py-5">
                                     <div class="text-muted mb-3" style="font-size: 3rem;"><i class="fas fa-scroll"></i></div>
                                     <h5 class="text-muted">Belum ada riwayat booking</h5>
                                     <p class="text-muted small">Semua sesi tarot yang lo pesan nantinya bakal muncul di sini.</p>
